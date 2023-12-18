@@ -1,12 +1,16 @@
+const ejsMate = require('ejs-mate')
 const express = require('express')
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
+
 
 const path = require('path')
 
 const Campground = require('./models/campground')
 
 const app = express();
+
+app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, '/views'))
 
@@ -21,6 +25,11 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp')
     console.log(`Error in connecting to Mongoose: ${e}`)
 })
     
+// serve default home page
+app.get('/', async (req, res) => {
+    res.render('home.ejs')
+})
+
 // serve page to show all campgrounds
 app.get('/campgrounds', async (req, res) => {
     const campgrounds = await Campground.find({})
