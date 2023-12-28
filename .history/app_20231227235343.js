@@ -11,7 +11,7 @@ const Review = require('./models/review')
 
 const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
-const {campgroundJoiSchema, reviewJoiSchema} = require('./joiSchemas')
+const {campgroundJoiSchema} = require('./joiSchemas')
 
 const app = express();
 
@@ -33,16 +33,6 @@ const validateCampground = (req, res, next) => {
     }
 }
 
-const validateReview = (req, res, next) => {
-    const {error} = reviewJoiSchema.validate(req.body)
-
-    if(error){
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next()
-    }
-}
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
 .then(() => {
@@ -54,7 +44,7 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp')
     
 // serve default home page
 app.get('/', catchAsync( async (req, res) => {
-    res.render('home')
+    res.render('home.ejs')
 }))
 
 // serve page to show all campgrounds
@@ -64,9 +54,9 @@ app.get('/campgrounds', catchAsync( async (req, res) => {
 }))
 
 // serve page to show a create campground page
-app.get('/campgrounds/new', (req, res) => {
+app.get('/campgrounds/new', catchAsync( (req, res) => {
     res.render('campgrounds/new')
-})
+}))
 
 // add a new campground
 app.post('/campgrounds', validateCampground, catchAsync( async (req, res, next) => {
@@ -76,28 +66,20 @@ app.post('/campgrounds', validateCampground, catchAsync( async (req, res, next) 
 }))
 
 
-// post a review
-app.post('/campgrounds/:id/reviews', validateReview, catchAsync( async (req, res) => {
+// serve page to show a single campground
+app.get('/campgrounds/:id', catchAsync( async (req, res) => {
+    const id = req.params.id
+    const campground = await Campground.findById(id)
+    res.render('campgrounds/show', {campground})
+}))
+
+app.post('/campgrounds/:id/reviews', catchAsync( async (req, res) => {
     const campground = await Campground.findById(req.params.id)
     const review = new Review(req.body.review)
     campground.reviews.push(review)
     await review.save()
     await campground.save()
     res.redirect(`/campgrounds/${req.params.id}`)
-}))
-
-app.delete('/campgrounds/:id/reviews/:reviewId', async (req, res) => {
-    const {id, reviewId} = req.params
-    const campground = await Campground.findByIdAndUpdate(id, { $pull : { reviews: reviewId } })
-    await Review.findByIdAndDelete(reviewId)
-    res.redirect(`/campgrounds/${campground.id}`)    
-})
-
-// serve page to show a single campground
-app.get('/campgrounds/:id', catchAsync( async (req, res) => {
-    const id = req.params.id
-    const campground = await Campground.findById(id).populate('reviews')
-    res.render('campgrounds/show', {campground})
 }))
 
 // serve page to show a edit campground page
@@ -128,6 +110,7 @@ app.all('*', (req, res, next) => {
 
 // error handling
 app.use((err, req, res, next) => {
+    console.log(err)
     const {statusCode = 500} = err
     if (!err.message) err.message = 'Something Went Wrong!'
     res.status(statusCode).render('error', {err})  

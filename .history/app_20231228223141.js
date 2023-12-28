@@ -88,7 +88,7 @@ app.post('/campgrounds/:id/reviews', validateReview, catchAsync( async (req, res
 
 app.delete('/campgrounds/:id/reviews/:reviewId', async (req, res) => {
     const {id, reviewId} = req.params
-    const campground = await Campground.findByIdAndUpdate(id, { $pull : { reviews: reviewId } })
+    const campground = await Campground.findByIdAndUpdate(id, { reviews : { $pull: reviewId } })
     await Review.findByIdAndDelete(reviewId)
     res.redirect(`/campgrounds/${campground.id}`)    
 })

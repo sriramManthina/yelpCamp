@@ -76,28 +76,21 @@ app.post('/campgrounds', validateCampground, catchAsync( async (req, res, next) 
 }))
 
 
+// serve page to show a single campground
+app.get('/campgrounds/:id', catchAsync( async (req, res) => {
+    const id = req.params.id
+    const campground = await Campground.findById(id)
+    res.render('campgrounds/show', {campground})
+}))
+
 // post a review
-app.post('/campgrounds/:id/reviews', validateReview, catchAsync( async (req, res) => {
+app.post('/campgrounds/:id/reviews', catchAsync( async (req, res) => {
     const campground = await Campground.findById(req.params.id)
     const review = new Review(req.body.review)
     campground.reviews.push(review)
     await review.save()
     await campground.save()
     res.redirect(`/campgrounds/${req.params.id}`)
-}))
-
-app.delete('/campgrounds/:id/reviews/:reviewId', async (req, res) => {
-    const {id, reviewId} = req.params
-    const campground = await Campground.findByIdAndUpdate(id, { $pull : { reviews: reviewId } })
-    await Review.findByIdAndDelete(reviewId)
-    res.redirect(`/campgrounds/${campground.id}`)    
-})
-
-// serve page to show a single campground
-app.get('/campgrounds/:id', catchAsync( async (req, res) => {
-    const id = req.params.id
-    const campground = await Campground.findById(id).populate('reviews')
-    res.render('campgrounds/show', {campground})
 }))
 
 // serve page to show a edit campground page
