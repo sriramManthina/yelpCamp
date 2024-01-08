@@ -1,0 +1,36 @@
+<% if(success && success.length) { %>
+    <% console.log(success) %>
+    <!-- success is an array which derives its values from res.locals.success -->
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%- success %>
+        <button type="button" class="btn-close success-alert-btn" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <script>
+        var successAlertButton = document.querySelector('.success-alert-btn')
+        var alertNode = document.querySelector('.alert')
+    
+        successAlertButton.addEventListener('click', function () {
+            alertNode.style.display = 'none'
+        })
+    </script>
+<% } %>
+
+
+<% if(error && error.length) { %>
+    <% console.log(error) %>
+    <!-- error is an array which derives its values from res.locals.error -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%- error %>
+        <button type="button" class="btn-close error-alert-btn" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <script>
+        var errorAlertButton = document.querySelector('.error-alert-btn')
+        var alertNode = document.querySelector('.alert')
+    
+        errorAlertButton.addEventListener('click', function () {
+            alertNode.style.display = 'none'
+        })
+    </script>
+<% } %>
