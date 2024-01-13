@@ -4,12 +4,17 @@ const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('connect-flash')
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
 
 const path = require('path')
 
+const User = require('./models/user')
 const campgroundRouter = require('./routes/campground')
 const reviewRouter = require('./routes/review')
+const userRouter = require('./routes/user')
 const catchAsync = require('./utils/catchAsync')
+const ExpressError = require('./utils/ExpressError')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
 .then(() => {
@@ -46,14 +51,27 @@ app.use(session(sessionConfig))
 // for flash messages (it also needs sessions support)
 app.use(flash())
 
+
+// for passport configuration (passport is used for authentication)
+// passport requires sessions support
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser()) // sets, how to store user in session
+passport.deserializeUser(User.deserializeUser()) // sets, how to delete user from a session
+
 // middlewares
 app.use((req, res, next) => {
+    // res.locals variables can be accessed by all the templates
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
+    res.locals.currentUser = req.user
+    console.log(req.user)
     next()
 })
 
 // routers
+app.use('/', userRouter)
 app.use('/campgrounds', campgroundRouter)
 app.use('/campgrounds/:id/reviews', reviewRouter)
 
