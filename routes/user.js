@@ -36,9 +36,6 @@ router.get('/login', (req, res) => {
     res.render('users/login')
 })
 
-// storeReturnTo is a middleware that needs to be executed before passport.authenticate
-// it is for storing where the user was before getting redirected to login
-// check 530. IMPORTANT: Passport.js Updates — Fixing The returnTo/Redirect Issue for more info
 
 // using passport.authenticate middleware for authentication
 // it calls req.login() within its functionality, so authenticating also does logging in directly 

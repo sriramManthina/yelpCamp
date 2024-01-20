@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
 const Campground = require('../models/campground')
+const Review = require('../models/review')
+const User = require('../models/user')
 const cities = require('./cities')
 const {places, descriptors} = require('./seedHelpers')
 
@@ -18,6 +20,8 @@ const sampleDescription = `Lorem ipsum dolor sit amet consectetur adipisicing el
 
 seedDB = async () => {
     await Campground.deleteMany()
+    await Review.deleteMany()
+    await User.deleteMany()
     for(let i=0; i<50; i++){
         let random1000 = Math.floor(Math.random()*1000)
         let randomPrice = Math.floor(Math.random()*30) + 20
@@ -26,7 +30,8 @@ seedDB = async () => {
             title: `${getRandomElement(descriptors)} ${getRandomElement(places)}`,
             price: randomPrice,
             image: 'https://source.unsplash.com/collection/483251',
-            description: sampleDescription
+            description: sampleDescription,
+            author: '659fb07cb96ec11024fe82ce'
         })
         await camp.save()
     }

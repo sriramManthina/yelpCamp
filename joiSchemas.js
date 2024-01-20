@@ -16,3 +16,5 @@ module.exports.reviewJoiSchema = Joi.object({
         body: Joi.string().required()
     }).required()
 })
+
+// Did not add JoiSchema for user, because passport takes care of it automatically
