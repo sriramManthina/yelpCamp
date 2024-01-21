@@ -31,6 +31,7 @@ app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, '/views'))
 
+app.use(express.json());
 app.use(express.urlencoded({extended:true})) // for parsing data from req.body
 app.use(methodOverride('_method')) // for sending put/patch requests from forms
 app.use(express.static(path.join(__dirname, '/public'))) // for serving static files in public directory
@@ -66,7 +67,6 @@ app.use((req, res, next) => {
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
     res.locals.currentUser = req.user
-    console.log(req.user)
     next()
 })
 
