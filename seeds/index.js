@@ -27,6 +27,10 @@ seedDB = async () => {
         let randomPrice = Math.floor(Math.random()*30) + 20
         const camp = new Campground({
             location: `${cities[random1000].city} - ${cities[random1000].state}`,
+            geometry: {
+                type: 'Point',
+                coordinates: [77.6845694, 12.998983]
+            },
             title: `${getRandomElement(descriptors)} ${getRandomElement(places)}`,
             price: randomPrice,
             image: 'https://source.unsplash.com/collection/483251',

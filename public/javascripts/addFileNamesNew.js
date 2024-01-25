@@ -104,6 +104,9 @@ function previewMultipleEdit(event=undefined) {
     } else if (number + currentImagesCountDiff > 3){
         formFileMessage.innerHTML = `Currently there are ${currentImagesCountDiff} images, Only ${3-currentImagesCountDiff} more images can be selected, Please choose again`
         editCampgroundButton.disabled = true
+    } else if (number + currentImagesCountDiff === 0) {
+        formFileMessage.innerHTML = 'You have selected to delete all images, either deselect some or upload more images'
+        editCampgroundButton.disabled = true
     } else {
         formFileMessage.innerHTML = ''
         editCampgroundButton.disabled = false

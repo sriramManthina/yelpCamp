@@ -4,28 +4,28 @@
 
 <div class="row mb-3">
     <div class="col-6">
-        <div id="campgroundCarousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <% campground.images.forEach((img, i) => { %>
-                    <div class="carousel-item <%= i===0?'active':'' %>">
-                        <img src="<%= img.url %>" class="card-img-top d-block w-100" alt="">
-                    </div>
-                <% }) %>
-            </div>
-            <% if(campground.images.length > 1) { %>
-                <button class="carousel-control-prev" type="button" data-target="#campgroundCarousel" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-target="#campgroundCarousel" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            <% } %>
-        </div>
-
         <div class="card">
-               
+            <div id="campgroundCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <% campground.images.forEach((img, i) => { %>
+                        <div class="carousel-item <%= i===0?'active':'' %>">
+                            <img src="<%= img.url %>" class="card-img-top d-block w-100" alt="">
+                        </div>
+                    <% }) %>
+                </div>
+                <% if(campground.images.length > 1) { %>
+                    <button class="carousel-control-prev" type="button" data-target="#campgroundCarousel" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-target="#campgroundCarousel" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                <% } %>
+            </div>
+
+
 
             <div class="card-body">
               <h5 class="card-title"><%= campground.title %></h5>
@@ -49,6 +49,9 @@
         </div>
     </div>
     <div class="col-6">
+
+        <div id='map' class="mb-3" style='width: 100%; height: 300px;'></div>
+
         <% if (currentUser) { %>
             <h2>Leave a Review</h2>
             <form action="/campgrounds/<%=campground.id%>/reviews" method="POST" novalidate class="mb-3 needs-validation">
@@ -100,6 +103,7 @@
                             <form action="/campgrounds/<%=campground.id%>/reviews/<%=review.id%>?_method=DELETE" method="POST">
                                 <button class="btn btn-danger">Delete Review</button>
                             </form>
+                            
                         <% } %>
                     </div>
                 </div>
@@ -110,3 +114,28 @@
         
     </div>
 </div>
+
+
+<script>
+    mapboxgl.accessToken = '<%- process.env.MAPBOX_KEY  %>';
+    let coordinates = '<%- campground.geometry.coordinates %>'
+    coordinates = coordinates.split(',').map(x => parseFloat(x, 10)); 
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v12', // style URL
+        center: coordinates, // starting position [lng, lat]
+        zoom: 9, // starting zoom
+    });
+
+    const url = `https://www.google.com/maps/search/?api=1&query=${coordinates[1]},${coordinates[0]}`
+    const popupHTML = `<h3><a href="${url}" target="_blank" style="text-decoration: none;color: black;"><%=campground.title%></a></h3>`
+    
+    const marker2 = new mapboxgl.Marker({ color: 'black'})
+                        .setLngLat(coordinates)
+                        .setPopup(
+                            new mapboxgl.Popup({ closeOnClick: false })
+                                .setHTML(popupHTML)
+                        )       
+                        .addTo(map)
+    
+</script>
