@@ -18,7 +18,6 @@ module.exports.isLoggedIn = (req, res, next) => {
 
 // for redirecting to the same url after login
 module.exports.storeReturnTo = (req, res, next) => {
-    console.log(`req.body: ${req.body}`)
     if (req.session.returnTo) {
         res.locals.returnTo = req.session.returnTo;
     }

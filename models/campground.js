@@ -2,11 +2,23 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const Review = require('./review')
+const { cloudinary } = require('../cloudinary')
+
+// creating a separate schema for images, since we are adding a virtual property called thumbnail for each image
+const ImageSchema = new Schema({
+    url: String,
+    fileName: String  
+})
+
+ImageSchema.virtual('thumbnail').get(function() {
+    // this refers to an individual image doc
+    return this.url.replace('/upload', '/upload/w_200')
+})
 
 const CampgroundSchema = new Schema({
     title: String,
     price: Number,
-    image: String,
+    images: [ImageSchema],
     description: String,
     location: String,
     author: {
@@ -24,6 +36,11 @@ CampgroundSchema.post('findOneAndDelete', async function (doc){
     if (doc){
         // delete all reviews associated with the campground
         await Review.deleteMany({ _id : { $in: doc.reviews } })
+
+        // delete images
+        for (let img of doc.images) {
+            await cloudinary.uploader.destroy(img.fileName);
+        }
     }
 })
 

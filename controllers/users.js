@@ -17,7 +17,6 @@ module.exports.registerUser = async (req, res, next) => {
         // this login method enables the user to login directly after signing up
         req.login(registeredUser, (err) => {
             if (err) return next(err)
-
             req.flash('success', 'Welcome to Yelp Camp!')
             res.redirect('/campgrounds')
         })

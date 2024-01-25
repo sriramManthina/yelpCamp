@@ -21,7 +21,7 @@ const sampleDescription = `Lorem ipsum dolor sit amet consectetur adipisicing el
 seedDB = async () => {
     await Campground.deleteMany()
     await Review.deleteMany()
-    await User.deleteMany()
+
     for(let i=0; i<50; i++){
         let random1000 = Math.floor(Math.random()*1000)
         let randomPrice = Math.floor(Math.random()*30) + 20
@@ -31,7 +31,18 @@ seedDB = async () => {
             price: randomPrice,
             image: 'https://source.unsplash.com/collection/483251',
             description: sampleDescription,
-            author: '659fb07cb96ec11024fe82ce'
+            author: '65af6659eb53ea68302a0172',
+            images: [
+                {
+                    url : 'https://res.cloudinary.com/dfildjiol/image/upload/v1706163575/YelpCamp/neom-yUcH008GS6A-unsplash_ohnwfv.jpg',
+                    fileName: 'YelpCamp/neom-yUcH008GS6A-unsplash_ohnwfv.jpg'
+                    
+                },
+                {
+                    url : 'https://res.cloudinary.com/dfildjiol/image/upload/v1706163575/YelpCamp/neom-EbIvcXzgU4s-unsplash_kkg3nf.jpg',
+                    fileName: 'YelpCamp/neom-EbIvcXzgU4s-unsplash_kkg3nf.jpg'
+                }
+            ]
         })
         await camp.save()
     }
