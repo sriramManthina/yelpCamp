@@ -126,7 +126,10 @@
         center: coordinates, // starting position [lng, lat]
         zoom: 9, // starting zoom
     });
-
+    
+    // adds controls for map
+    map.addControl(new mapboxgl.NavigationControl())
+    
     const url = `https://www.google.com/maps/search/?api=1&query=${coordinates[1]},${coordinates[0]}`
     const popupHTML = `<h3><a href="${url}" target="_blank" style="text-decoration: none;color: black;"><%=campground.title%></a></h3>`
     
