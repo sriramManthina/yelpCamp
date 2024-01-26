@@ -29,7 +29,7 @@ seedDB = async () => {
             location: `${cities[random1000].city} - ${cities[random1000].state}`,
             geometry: {
                 type: 'Point',
-                coordinates: [77.6845694, 12.998983]
+                coordinates: [cities[random1000].longitude, cities[random1000].latitude]
             },
             title: `${getRandomElement(descriptors)} ${getRandomElement(places)}`,
             price: randomPrice,

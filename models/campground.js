@@ -15,6 +15,9 @@ ImageSchema.virtual('thumbnail').get(function() {
     return this.url.replace('/upload', '/upload/w_200')
 })
 
+// if the campground obj is converted to JSON, then virtuals wont be removed by setting it to true as below
+const opts = { toJSON: { virtuals: true }}
+
 const CampgroundSchema = new Schema({
     title: String,
     price: Number,
@@ -40,6 +43,12 @@ const CampgroundSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Review'
     }]
+}, opts)
+
+// for clustermap on index page 
+CampgroundSchema.virtual('properties.popUpMarkup').get(function() {
+    // this refers to the campground doc
+    return `<strong><a href=http://localhost:3000/campgrounds/${this._id}>${this.title}</a></strong>`
 })
 
 CampgroundSchema.post('findOneAndDelete', async function (doc){
