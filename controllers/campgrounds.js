@@ -3,6 +3,7 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding')
 const mapBoxToken = process.env.MAPBOX_KEY
 const geoCoder = mbxGeocoding({accessToken : mapBoxToken})
 const { cloudinary } = require('../cloudinary')
+const sanitizeHTML = require('sanitize-html')
 
 // serve page to show all campgrounds
 module.exports.index = async (req, res) => {
@@ -28,7 +29,7 @@ module.exports.createCampground = async (req, res) => {
     campground.images = req.files.map(f => ({url: f.path, fileName: f.filename}))
     await campground.save()
     // console.log(campground)
-    req.flash('success', `Successfully made a new Campground <b> ${req.body.campground.title} </b>`)
+    req.flash('success', `Successfully made a new Campground ` + sanitizeHTML(`<b> ${req.body.campground.title} </b>`))
     res.redirect(`/campgrounds/${campground.id}`)
 }
 
@@ -75,7 +76,7 @@ module.exports.editCampground = async (req, res) => {
         await campground.updateOne({$pull: { images: { fileName: {$in: req.body.deleteImages} } }})
         console.log(campground)
     }
-    req.flash('success', `Successfully updated campground <b> ${req.body.campground.title} </b>`)
+    req.flash('success', `Successfully updated campground ` + sanitizeHTML(`<b> ${req.body.campground.title} </b>`))
     res.redirect(`/campgrounds/${req.params.id}`)
 }
 

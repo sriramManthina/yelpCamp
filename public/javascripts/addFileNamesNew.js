@@ -12,7 +12,10 @@ if(currentImages){
 }
 
 var deleteImagesCheckboxes = document.getElementById('deleteImagesCheckboxes')
-const checkboxesArray = deleteImagesCheckboxes.querySelectorAll('input[type="checkbox"]')
+var checkboxesArray = []
+if (deleteImagesCheckboxes){
+    checkboxesArray = deleteImagesCheckboxes.querySelectorAll('input[type="checkbox"]')
+}
 
 var currentImagesChecked = [0, 0, 0]  
 
