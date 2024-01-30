@@ -24,8 +24,8 @@ const userRouter = require('./routes/user')
 const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
 
-// const mongodb_url = process.env.MONGODB_URL
-const mongodb_url = 'mongodb://localhost:27017/yelp-camp'
+const mongodb_url = process.env.MONGODB_URL
+// const mongodb_url = 'mongodb://localhost:27017/yelp-camp'
 mongoose.connect(mongodb_url)
 .then(() => {
     console.log('Connected to Mongoose')
