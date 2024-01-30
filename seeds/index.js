@@ -16,8 +16,8 @@ db.once('open', () => {
 
 const getRandomElement = (arr) => arr[Math.floor( Math.random() * arr.length )]
 
-const sampleDescription = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas aperiam, amet quidem, dicta quis nisi exercitationem voluptatum cumque aut debitis iste illum temporibus nostrum repellendus placeat eligendi ducimus veritatis! Officiis sunt dolorum architecto neque. Eius, placeat aperiam. Optio magnam doloremque, quis rem ipsum est qui voluptatum, voluptate nam dolor nobis officia assumenda deleniti non neque inventore cum modi ratione. Nostrum corporis necessitatibus placeat rem iure eaque! Accusamus vitae assumenda, consequuntur, officiis aut animi ducimus autem corporis quasi accusantium molestiae magni fugit fugiat ut dolore cumque doloremque sunt, quis soluta! A voluptate repellendus expedita pariatur porro eius, illum soluta. Commodi, voluptatibus ipsam placeat doloribus doloremque sed unde numquam odio accusamus eum fuga dolor minima eligendi! Fugit explicabo repellendus alias dicta?`
-
+// const sampleDescription = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas aperiam, amet quidem, dicta quis nisi exercitationem voluptatum cumque aut debitis iste illum temporibus nostrum repellendus placeat eligendi ducimus veritatis! Officiis sunt dolorum architecto neque. Eius, placeat aperiam. Optio magnam doloremque, quis rem ipsum est qui voluptatum, voluptate nam dolor nobis officia assumenda deleniti non neque inventore cum modi ratione. Nostrum corporis necessitatibus placeat rem iure eaque! Accusamus vitae assumenda, consequuntur, officiis aut animi ducimus autem corporis quasi accusantium molestiae magni fugit fugiat ut dolore cumque doloremque sunt, quis soluta! A voluptate repellendus expedita pariatur porro eius, illum soluta. Commodi, voluptatibus ipsam placeat doloribus doloremque sed unde numquam odio accusamus eum fuga dolor minima eligendi! Fugit explicabo repellendus alias dicta?`
+const sampleDescription = 'This is such a good place'
 seedDB = async () => {
     await Campground.deleteMany()
     await Review.deleteMany()
@@ -33,9 +33,9 @@ seedDB = async () => {
             },
             title: `${getRandomElement(descriptors)} ${getRandomElement(places)}`,
             price: randomPrice,
-            image: 'https://source.unsplash.com/collection/483251',
+            // image: 'https://source.unsplash.com/collection/483251',
             description: sampleDescription,
-            author: '65af6659eb53ea68302a0172',
+            author: '65b8f6be6b1393773c511ff2',
             images: [
                 {
                     url : 'https://res.cloudinary.com/dfildjiol/image/upload/v1706163575/YelpCamp/neom-yUcH008GS6A-unsplash_ohnwfv.jpg',

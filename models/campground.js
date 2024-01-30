@@ -48,7 +48,9 @@ const CampgroundSchema = new Schema({
 // for clustermap on index page 
 CampgroundSchema.virtual('properties.popUpMarkup').get(function() {
     // this refers to the campground doc
-    return `<strong><a href=http://localhost:3000/campgrounds/${this._id}>${this.title}</a></strong>`
+    // return `<strong><a href=http://localhost:3000/campgrounds/${this._id}>${this.title}</a></strong>`
+    return `<strong><a href=http://yelpcampservicemsv.onrender.com/campgrounds/${this._id}>${this.title}</a></strong>`
+
 })
 
 CampgroundSchema.post('findOneAndDelete', async function (doc){

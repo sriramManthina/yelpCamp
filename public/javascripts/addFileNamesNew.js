@@ -30,12 +30,12 @@ function handleCheckboxChange() {
         currentImagesChecked[i] = 1
     else
         currentImagesChecked[i] = 0
-    console.log(currentImagesChecked, currentImagesCount)
+    // console.log(currentImagesChecked, currentImagesCount)
     previewMultipleEdit()
 }
 
 function previewMultiple(event) {
-    console.log('event triggered')
+    // console.log('event triggered')
     var images = document.getElementById("image");
     var number = images.files.length;
     // console.log(images.files) 
@@ -78,7 +78,7 @@ function countOccurrences(mainString, substring) {
 
 
 function previewMultipleEdit(event=undefined) {
-    console.log('event triggered')
+    // console.log('event triggered')
     
     var images = document.getElementById("image");
     var number = images.files.length;
