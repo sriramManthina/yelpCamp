@@ -10,8 +10,10 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
-const mongoSanitize = require('express-mongo-sanitize');
+const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
+const MongoStore = require('connect-mongo')
+
 
 const path = require('path')
 
@@ -22,7 +24,9 @@ const userRouter = require('./routes/user')
 const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp')
+// const mongodb_url = process.env.MONGODB_URL
+const mongodb_url = 'mongodb://localhost:27017/yelp-camp'
+mongoose.connect(mongodb_url)
 .then(() => {
     console.log('Connected to Mongoose')
 })
@@ -43,10 +47,23 @@ app.use(mongoSanitize()) // for preventing Mongo Injection Attacks
 app.use(methodOverride('_method')) // for sending put/patch requests from forms
 app.use(express.static(path.join(__dirname, '/public'))) // for serving static files in public directory
 
+// location to store the sessions
+// by default, sessions are stored in the memory, but not ideal for large scale
+// hence adding sessions in mongoDB
+const store = MongoStore.create({
+    mongoUrl: mongodb_url,
+    touchAfter: 24 * 60 * 60, // time period in seconds
+    crypto: {   
+        secret: process.env.SESSION_CONFIG_STORE_KEY
+    }
+})
+
+
 // for adding sessions
 const sessionConfig = {
+    store: store,
     name: 'sessionCookie',
-    secret: 'someRandomSecretKey',
+    secret: process.env.SESSION_CONFIG_KEY,
     resave: false, // to remove warning
     saveUninitialized: true, // to remove warning
     cookie: {
