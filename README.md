@@ -32,6 +32,7 @@
     - Campground View Button
       - Redirect to (/campgrounds/:campgroundId)      
 - View Campground Page (/campgrounds/:campgroundId)
+  - Header
   - Left Card
     - Campground Images Carousel
     - All the Campground Info
