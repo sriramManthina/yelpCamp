@@ -36,7 +36,7 @@ module.exports.createCampground = async (req, res) => {
 // serve page to show a single campground
 module.exports.showCampground = async (req, res) => {
     const id = req.params.id
-    const campground = await Campground.findById(id).populate({
+        const campground = await Campground.findById(id).populate({
         path: 'reviews',
         populate: {
             path: 'author' // for populating each review's author (nested populating)
@@ -46,7 +46,7 @@ module.exports.showCampground = async (req, res) => {
         req.flash('error', 'Cannot find that Campground!')
         return res.redirect('/campgrounds')
     }
-    res.render('campgrounds/show', {campground})
+        res.render('campgrounds/show', {campground})
 }
 
 // serve page to show a edit campground page

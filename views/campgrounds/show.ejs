@@ -117,7 +117,7 @@
 
 
 <script>
-    mapboxgl.accessToken = '<%- process.env.MAPBOX_KEY  %>';
+        mapboxgl.accessToken = '<%- process.env.MAPBOX_KEY  %>';
     let coordinates = '<%- campground.geometry.coordinates %>'
     coordinates = coordinates.split(',').map(x => parseFloat(x, 10)); 
     const map = new mapboxgl.Map({

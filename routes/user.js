@@ -4,12 +4,12 @@ const passport = require('passport')
 
 const catchAsync = require('../utils/catchAsync')
 const ExpressError = require('../utils/ExpressError')
-const { storeReturnTo } = require('../middleware')
+const { storeReturnTo, validateRegisterForm } = require('../middleware')
 const userController = require('../controllers/users')
 
 router.route('/register')
     .get(userController.renderRegisterForm)
-    .post(catchAsync(userController.registerUser))
+    .post(validateRegisterForm, catchAsync(userController.registerUser))
 
 router.route('/login')
     .get(userController.renderLoginForm)

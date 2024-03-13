@@ -69,3 +69,43 @@ module.exports.validateAuthorForReview = async (req, res, next) => {
     }
     next()
 }
+
+
+// middleware, checks if the user credentials match the requirement
+module.exports.validateRegisterForm = async (req, res, next) => { 
+    const { username, email, password } = req.body
+    const isUserNameValid = /^[a-zA-Z][a-zA-Z0-9_]{5,7}$/.test(username)
+    const isEmailValid = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)
+    const isPasswordValid = /^(?=.*\d)(?=.*[A-Z]).{6,}$/.test(password)
+    const pattern = /^[a-zA-Z]/
+
+    if(!isUserNameValid) {
+        if (username.length < 6 || username.length > 8){
+            req.flash('error', `Username must be 6-8 characters`)
+            return res.redirect('/register')
+        }
+        else if (!pattern.test(username[0])){
+            req.flash('error', `Username must start with an alphabet`)
+            return res.redirect('/register')
+        }
+        else{
+            req.flash('error', 'Username can only contain alphabets, digits, and _')
+            return res.redirect('/register')
+        }
+    }
+    if(!isEmailValid) {
+        req.flash('error', `Invalid Email Address, Please check again`)
+        return res.redirect('/register')
+    }
+    if(!isPasswordValid) {
+        if (password.length < 6){
+            req.flash('error', `Password must contain at least 6 characters`)
+            return res.redirect('/register')
+        }
+        else{
+            req.flash('error', 'Password must contain at least 1 number and Upper-case letter')
+            return res.redirect('/register')
+        }
+    }
+    next()
+}
