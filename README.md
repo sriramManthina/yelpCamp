@@ -1,7 +1,5 @@
 # YelpCamp
 
-# YelpCamp
-
 ## Key Features
 
 - Header
@@ -50,6 +48,7 @@
       - Add the review text and submit
     - Show Current Reviews
       - Reviewer Name / Review Text / 1-5 Stars
+      - Delete Review Button (only displayed if user created this review)
 - Edit Campground Page (campgrounds/:campgroundId/edit)
   - Header
   - Edit form to edit the info
@@ -63,20 +62,7 @@
   - If the above condition is not satisfied, the edit button will be disabled
 - Delete Campground Page (campgrounds/:campgroundId/delete)
   - Delete the campground and redirect to (/campgrounds) (with flash card "Successfully deleted")
-
-## Key Features
-
-- Home
-- Login / Sign Up
-  - Sign in / Sign Up Form
-  - Redirect to Browse Page once Logged in
-- Browser Page (After Authentication)
-  - Header
-  - Main Movie
-    - Trailer in Background
-    - Title and Description
-    - Movie Suggestions
-      - Movie Lists * n
-- Netflix GPT
-  - Search Bar
-  - Movie Suggestions
+- Create Review
+  - Creates review for that campground, under the user and redirect to (/campgrounds/:campgroundId) (with flash card "Created the new review")   
+- Delete Review (reviews/:reviewId)
+  - Delete the campground and redirect to (/campgrounds/:campgroundId) (with flash card "Deleted the Review")
